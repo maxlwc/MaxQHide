@@ -256,8 +256,8 @@ def enum_windows():
 
 DEFAULT_CONFIG = {
     "version": 1,
-    "hide_hotkey": "ctrl+alt+h",
-    "show_hotkey": "ctrl+alt+s",
+    "hide_hotkey": "ctrl+f9",
+    "show_hotkey": "ctrl+f10",
     "hide_gui": True,              # 按老板键时同时隐藏本设置窗口
     "monitor_new_windows": True,   # 隐藏期间自动隐藏新弹出的匹配窗口
     "autostart": False,

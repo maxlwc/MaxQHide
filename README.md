@@ -19,8 +19,8 @@ pythonw bosskey.pyw
 
 | 操作 | 说明 |
 | --- | --- |
-| `Ctrl+Alt+H` | 一键隐藏列表中所有程序（默认热键） |
-| `Ctrl+Alt+S` | 一键唤醒全部被隐藏的程序（默认热键） |
+| `Ctrl+F9` | 一键隐藏列表中所有程序（默认热键） |
+| `Ctrl+F10` | 一键唤醒全部被隐藏的程序（默认热键） |
 | 程序独立热键 | 可为每个程序单独设置热键，按下后只隐藏/唤醒该程序（再按一次切换） |
 | 单击 / 双击托盘图标 | 打开设置窗口 |
 | 托盘右键 | 打开设置 / 立即隐藏 / 立即唤醒 / 退出 |
@@ -49,8 +49,8 @@ pythonw bosskey.pyw
 ```json
 {
   "version": 1,
-  "hide_hotkey": "ctrl+alt+h",
-  "show_hotkey": "ctrl+alt+s",
+  "hide_hotkey": "ctrl+f9",
+  "show_hotkey": "ctrl+f10",
   "hide_gui": true,
   "monitor_new_windows": true,
   "autostart": false,

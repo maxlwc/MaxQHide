@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "hide_hotkey": "ctrl+alt+h",
-  "show_hotkey": "ctrl+alt+s",
+  "hide_hotkey": "ctrl+f9",
+  "show_hotkey": "ctrl+f10",
   "hide_gui": true,
   "monitor_new_windows": true,
   "autostart": false,
