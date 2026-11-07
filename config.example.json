@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hide_hotkey": "ctrl+alt+h",
+  "show_hotkey": "ctrl+alt+s",
+  "hide_gui": true,
+  "monitor_new_windows": true,
+  "autostart": false,
+  "programs": [
+    {"id": 1, "name": "示例：记事本", "match_type": "process", "match_value": "notepad.exe", "enabled": true},
+    {"id": 2, "name": "某UWP游戏", "match_type": "title", "match_value": "游戏窗口标题关键词", "enabled": true, "hotkey": "ctrl+f6"}
+  ]
+}

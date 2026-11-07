@@ -1,0 +1,9 @@
+# 个人配置（含各自的程序列表与热键，首次运行会自动生成）
+config.json
+
+# 调试日志（含窗口标题等隐私信息）
+maxqhide_debug.log
+
+__pycache__/
+*.pyc
+.claude/
