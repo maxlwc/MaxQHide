@@ -32,7 +32,13 @@ DEBUG_LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                          "maxqhide_debug.log")
 
 
+# 调试日志默认关闭：老板键不应在磁盘留下操作痕迹；排障时设 MAXQHIDE_DEBUG=1
+DEBUG = bool(os.environ.get("MAXQHIDE_DEBUG"))
+
+
 def dbg(msg):
+    if not DEBUG:
+        return
     with open(DEBUG_LOG, "a", encoding="utf-8") as f:
         f.write("%.3f %s\n" % (time.time(), msg))
 
@@ -201,21 +207,37 @@ class WinInfo:
     exe: str
 
 
+_exe_cache = {}      # pid -> (exe 名, time.monotonic())
+_EXE_CACHE_TTL = 120.0
+
+
 def get_process_name(pid):
-    """返回进程可执行文件名，如 notepad.exe；失败返回空串。"""
+    """返回进程可执行文件名，如 notepad.exe；失败返回空串。
+
+    结果按 pid 缓存（含失败）：状态刷新/隐藏监视每 0.7~2 秒轮询一次，
+    不缓存会反复 OpenProcess 打开同一进程句柄——游戏反作弊会监控这类操作。
+    pid 被复用时缓存可能短暂返回旧名（≤TTL），对窗口匹配影响可忽略。
+    """
     if not pid:
         return ""
+    now = time.monotonic()
+    hit = _exe_cache.get(pid)
+    if hit is not None and now - hit[1] < _EXE_CACHE_TTL:
+        return hit[0]
+    if len(_exe_cache) > 1024:
+        _exe_cache.clear()
+    name = ""
     h = kernel32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
-    if not h:
-        return ""
-    try:
-        buf = ctypes.create_unicode_buffer(1024)
-        size = wt.DWORD(1024)
-        if kernel32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(size)):
-            return os.path.basename(buf.value)
-        return ""
-    finally:
-        kernel32.CloseHandle(h)
+    if h:
+        try:
+            buf = ctypes.create_unicode_buffer(1024)
+            size = wt.DWORD(1024)
+            if kernel32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(size)):
+                name = os.path.basename(buf.value)
+        finally:
+            kernel32.CloseHandle(h)
+    _exe_cache[pid] = (name, now)
+    return name
 
 
 def is_cloaked(hwnd):
